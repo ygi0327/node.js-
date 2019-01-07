@@ -41,11 +41,23 @@ app.get('/login', function(req, res){
     res.send('<h1>Login<h1>')
 });
 
- app.listen(3000, function() {
-     console.log("연결됨 3000 포트");
- });   //포트 정하기
+app.listen(3000, function() {
+    console.log("연결됨 3000 포트");
+});   //포트 정하기
 
- app.get('/topic',function(req, res) {
-     
- });
+app.get('/topic2',function(req, res) {
+     res.send(req.query.id+', '+req.query.name);
+ }); 
+ // http://localhost:3000/topic?id=20&name=test  id와 name의 값을 req로 받는다.
+ 
+app.get('/topic',function(req, res) {
+    var topics = ['Java', 'Node', 'Express'];
+    var output = `
+    <a href="/topic?id=0">Java</a><br>
+    <a href="/topic?id=1">Node</a><br>
+    <a href="/topic?id=2">Express</a><br><br>
+    ${topics[req.query.id]}
+    `
+    res.send(output);
+});   // 홈페이지 제작(임시)
 
