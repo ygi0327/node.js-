@@ -1,10 +1,13 @@
- var express = require('express');
- var app = express();
- app.set('view engine', 'pug');
- app.set('views', './views');
- app.locals.pretty = true;
- app.use(express.static('public'));  
+var express = require('express');
+var app = express();
+var bodyparser = require('body-parser');  // post하기 위해 필요한 미들웨어
+app.set('view engine', 'pug'); //pug 엔진 템플릿 불러오기
+app.set('views', './views');  // 뷰파일 불러오기 (pug,html)
+app.locals.pretty = true;   // html 이쁘게
+app.use(express.static('public'));  
  //[정적인 파일 디렉토리 설정] 이미지, 텍스트파일을 넣을수 있음
+
+app.use(bodyparser.urlencoded({extended:false}));  // bodyparser 에 필요한 코드
 
 app.get('/', function(req, res) {
     res.send('Hello');
@@ -66,13 +69,13 @@ app.get('/topic',function(req, res) {
 app.get('/topic/:id',function(req, res) {  
     var topics = ['Java', 'Node', 'Express'];
     var output = `
-    <a href="/topic?id=0">Java</a><br>
-    <a href="/topic?id=1">Node</a><br>
-    <a href="/topic?id=2">Express</a><br><br>
+    <a href="/topic/0">Java</a><br>
+    <a href="/topic/1">Node</a><br>
+    <a href="/topic/2">Express</a><br><br>
     ${topics[req.params.id]}
     `
     res.send(output);
-});   
+});    // 파라미터 방식
 /* 
 주소 뒤 /:id 를 할 경우
 http://localhost:3000/topic/[아무숫자]
@@ -87,4 +90,25 @@ app.get('/topicid/:id/:mode', function(req, res){
 
 app.get('/form', function(req, res) {
    res.render('form'); 
-});
+});  //pug 불러오는 방법  
+
+app.get('/form_receiver', function(req, res){
+    var title = req.query.title;               // 값 선언 
+    var description = req.query.description;
+
+    res.send(`결과값: ${title}, ${description}`);
+});    // 넣은 결과를 보여주는 페이지  (query를 사용해 변수값을 불러옴)
+
+
+app.post('/form_receiver', function(req, res){
+    var title = req.body.title;               // 값 선언 
+    var description = req.body.description;
+    res.send(title +', ' + description);
+});  // body를 사용해 변수값을 불러옴
+/*
+get 방식은 주소(url)에 결과값이 남음
+post 방식은 주소(url)에 안남음  (전송 데이터가 많을때)
+(보안성은 차이가 없음) = https 를 사용해야함
+
+*/
+
