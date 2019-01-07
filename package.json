@@ -5,7 +5,9 @@
   "main": "webserver.js",
   "dependencies": {
     "express": "^4.16.4",
+    "html": "^1.0.0",
     "ionic": "^4.6.0",
+    "pug": "^2.0.3",
     "underscore": "^1.9.1"
   },
   "devDependencies": {},

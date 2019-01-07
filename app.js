@@ -1,6 +1,8 @@
  var express = require('express');
  var app = express();
-
+ app.set('view engine', 'pug');
+ app.set('views', './views');
+ app.locals.pretty = true;
  app.use(express.static('public'));  
  //[정적인 파일 디렉토리 설정] 이미지, 텍스트파일을 넣을수 있음
 
@@ -50,7 +52,7 @@ app.get('/topic2',function(req, res) {
  }); 
  // http://localhost:3000/topic?id=20&name=test  id와 name의 값을 req로 받는다.
  
-app.get('/topic',function(req, res) {
+app.get('/topic',function(req, res) {  
     var topics = ['Java', 'Node', 'Express'];
     var output = `
     <a href="/topic?id=0">Java</a><br>
@@ -61,3 +63,28 @@ app.get('/topic',function(req, res) {
     res.send(output);
 });   // 홈페이지 제작(임시)
 
+app.get('/topic/:id',function(req, res) {  
+    var topics = ['Java', 'Node', 'Express'];
+    var output = `
+    <a href="/topic?id=0">Java</a><br>
+    <a href="/topic?id=1">Node</a><br>
+    <a href="/topic?id=2">Express</a><br><br>
+    ${topics[req.params.id]}
+    `
+    res.send(output);
+});   
+/* 
+주소 뒤 /:id 를 할 경우
+http://localhost:3000/topic/[아무숫자]
+아무 숫자를 넣어도 인식한다 ex) 1, 1000, 21321 ....
+parms 는 /id 가 인식되게 만들어준다. (id내의 값이 있을 경우)
+*/
+
+app.get('/topicid/:id/:mode', function(req, res){
+    res.send(req.params.id+', '+req.params.mode);
+});
+// 주소가 다중일 경우  http://localhost:3000/topicid/1/edit
+
+app.get('/form', function(req, res) {
+   res.render('form'); 
+});
