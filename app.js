@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var multer = require('multer');  // 파일 업로드를 위한 multer 모듈 설치
+var upload = multer({dest : '../uploads/'})
 var bodyparser = require('body-parser');  // post하기 위해 필요한 미들웨어
 app.set('view engine', 'pug'); //pug 엔진 템플릿 불러오기
 app.set('views', './views');  // 뷰파일 불러오기 (pug,html)
@@ -109,6 +111,56 @@ app.post('/form_receiver', function(req, res){
 get 방식은 주소(url)에 결과값이 남음
 post 방식은 주소(url)에 안남음  (전송 데이터가 많을때)
 (보안성은 차이가 없음) = https 를 사용해야함
-
 */
 
+
+app.get('/uploadform', function(req, res){
+ 
+    res.render('upload');
+});
+
+app.post('/upload', upload.single('userfile'), function(req, res){
+    res.send('das '+req.file.filename);
+       console.log(req.file);
+});
+
+// 지울 내용 ------------------------------
+app.get('/ttt',function(req, res){
+    var t = `
+    <html>
+    <head>
+    <meta chaset = 'utf-8'>
+    </head>
+    <body>
+    <form action='/ptt'>
+    <input type="text", name='tes'>
+    </form>
+    </body>
+    </html>
+    `
+   res.send(t);
+});
+
+app.get('/ptt',function(req, res){
+   res.send("test다 " +req.query.tes);
+});
+
+app.get('/ttt2',function(req, res){
+    var t = `
+    <html>
+    <head>
+    <meta chaset = 'utf-8'>
+    </head>
+    <body>
+    <form action='/ptt2' method = 'post' >
+    <input type="text", name='tes'>
+    </form>
+    </body>
+    </html>
+    `
+   res.send(t);
+});
+
+app.post('/ptt2',function(req, res){
+   res.send("test다 " +req.body.tes);
+});
