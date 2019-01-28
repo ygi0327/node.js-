@@ -1,0 +1,11 @@
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+        title 웹 페이지 만들기
+    body
+        h1 Sever Side JavaScript
+        ul
+            each topic in topics   
+                li
+                    a(href='/topic/'+topic)= topic

@@ -60,7 +60,7 @@ app.get('/topic2',function(req, res) {
 app.get('/topic',function(req, res) {  
     var topics = ['Java', 'Node', 'Express'];
     var output = `
-    <a href="/topic?id=0">Java</a><br>
+    <a href="/topic?id=0">Java</a><br>  
     <a href="/topic?id=1">Node</a><br>
     <a href="/topic?id=2">Express</a><br><br>
     ${topics[req.query.id]}
@@ -163,4 +163,27 @@ app.get('/ttt2',function(req, res){
 
 app.post('/ptt2',function(req, res){
    res.send("test다 " +req.body.tes);
+});
+
+
+app.get('/topic/id', function(req, res) {
+    var topics = [
+        'javascript is...',
+        'nodejs is...',
+        'Express is...'
+    ];
+
+    var output =`
+    <a href="/topic/0">JavaScript</a><br>
+    <a href="/topic/0">Nodejs</a><br>
+    <a href="/topic/0">Express</a><br><br>
+    ${topics[req.params.id]}
+    `
+    res.send(output);
+    
+});
+
+
+app.get('/topicids/:id:mode',function(req,res){
+    res.send(req,params.id+', '+req.params.mode)
 });
